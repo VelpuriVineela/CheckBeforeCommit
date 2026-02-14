@@ -244,47 +244,47 @@ export async function analyzeRepo(repoData: any) {
     - Repository Name: ${repoData.name}
     - Owner: ${repoData.owner}
     - Primary Language: ${repoData.language}
-    - File Structure: ${JSON.stringify(repoData.files || [], null, 2)}
+    - File Structure: ${JSON.stringify(repoData.tree || [], null, 2)}
     - Description: ${repoData.description || "No description provided."}
 
     GOAL:
-    Provide a brutal, honest, and technically dense assessment. Do not summarize the code. Evaluate its engineering quality, risks, and health.
+    Provide a brutal, honest, and technically dense assessment.Do not summarize the code.Evaluate its engineering quality, risks, and health.
 
     CRITICAL RULES:
-    1. NO PLATITUDES: Never say "Usage of TypeScript adds type safety." We know. Say "Strict TypeScript usage in API layers reduces runtime regression risk."
+    1. NO PLATITUDES: Never say "Usage of TypeScript adds type safety." We know.Say "Strict TypeScript usage in API layers reduces runtime regression risk."
     2. SPECIFIC EVIDENCE: Back every claim with a file path or pattern found in the file list.
-    3. CHANGE-CENTRIC: Focus on "Change Blast Radius" and "Refactor Risk". An engineer reading this wants to know "If I touch X, does Y break?".
-    4. DECISION-FIRST: Your output must lead to a clear "Adopt", "Refactor", or "Avoid" decision.
+    3. CHANGE - CENTRIC: Focus on "Change Blast Radius" and "Refactor Risk".An engineer reading this wants to know "If I touch X, does Y break?".
+    4. DECISION - FIRST: Your output must lead to a clear "Adopt", "Refactor", or "Avoid" decision.
     5. TONE: Professional, concise, unsentimental. 
 
     STRICT OUTPUT FORMAT:
-    You MUST return a JSON object that perfectly matches the following Zod schema structure (do not include markdown fencing, just raw JSON):
+    You MUST return a JSON object that perfectly matches the following Zod schema structure(do not include markdown fencing, just raw JSON):
 
     {
         "repoSnapshot": { "description": string, "primaryStack": string, "architectureType": "Feature-based" | "Layered" | "Monolithic" | "Microservices" | "Hybrid" | "Unstructured", "codebaseSize": "Small" | "Medium" | "Large" | "Massive", "activitySignal": "Actively Maintained" | "Low Activity" | "Stagnant" | "Deprecated" },
-        "executiveVerdict": { 
+        "executiveVerdict": {
             "maturityStage": "Prototype" | "Structured Early-Stage" | "Growing" | "Production-Grade",
-            "maintainabilityScore": number,
-            "maintenanceContext": string,
-            "modularityStrength": "Weak" | "Moderate" | "Strong",
-            "couplingRisk": "Low" | "Medium" | "High",
-            "couplingContext": string,
-            "refactorSafety": "Low" | "Moderate" | "High",
-            "refactorContext": string,
-            "productionReadiness": "Experimental" | "Early-stage" | "Stable" | "Production-Hardened",
-            "adoptionRecommendation": "Safe to adopt" | "Adopt with caution" | "Refactor before adopting" | "Not recommended for production" 
+                "maintainabilityScore": number,
+                    "maintenanceContext": string,
+                        "modularityStrength": "Weak" | "Moderate" | "Strong",
+                            "couplingRisk": "Low" | "Medium" | "High",
+                                "couplingContext": string,
+                                    "refactorSafety": "Low" | "Moderate" | "High",
+                                        "refactorContext": string,
+                                            "productionReadiness": "Experimental" | "Early-stage" | "Stable" | "Production-Hardened",
+                                                "adoptionRecommendation": "Safe to adopt" | "Adopt with caution" | "Refactor before adopting" | "Not recommended for production"
         },
-        "architecturalHealth": { 
+        "architecturalHealth": {
             "architectureIdentity": string,
-            "pattern": string, 
-            "boundaryStrength": string, 
-            "cohesion": string, 
-            "consistency": string 
+                "pattern": string,
+                    "boundaryStrength": string,
+                        "cohesion": string,
+                            "consistency": string
         },
         "dependencyAnalysis": {
             "centralNodes": string[],
-            "topConsumers": string[],
-            "circularRisk": string
+                "topConsumers": string[],
+                    "circularRisk": string
         },
         "blastRadius": { "highBlastRadiusAreas": string[], "safeZones": string[], "refactorConfidence": string },
         "maintainability": { "centralization": string, "abstractionQuality": string, "dependencySprawl": string, "technicalDebtIndicators": string[] },
@@ -293,28 +293,22 @@ export async function analyzeRepo(repoData: any) {
         "scalability": { "deploymentMaturity": string, "configHygiene": string, "scalingBottlenecks": string, "caching": string },
         "onboarding": { "setupComplexity": "Low" | "Moderate" | "High", "documentationClarity": "Poor" | "Average" | "Excellent", "estimatedOnboardingTime": string, "keyFilesToRead": string[], "areasToAvoid": string[] },
         "improvements": [{ "title": string, "description": string, "priority": "High" | "Medium" | "Low" }],
-        "finalRecommendation": { "goodFor": string[], "riskyFor": string[], "recommendedApproach": string }
+            "finalRecommendation": { "goodFor": string[], "riskyFor": string[], "recommendedApproach": string }
     }
-  `;
+    `;
 
-    try {
-        const response = await openai.chat.completions.create({
-            model: model,
-            messages: [
-                { role: "system", content: "You are a Principal Software Architect. Provide dense, evidence-based technical audits." },
-                { role: "user", content: prompt }
-            ],
-            response_format: { type: "json_object" },
-        });
+    const response = await openai.chat.completions.create({
+        model: model,
+        messages: [
+            { role: "system", content: "You are a Principal Software Architect. Provide dense, evidence-based technical audits." },
+            { role: "user", content: prompt }
+        ],
+        response_format: { type: "json_object" },
+    });
 
-        const content = response.choices[0].message.content;
-        if (!content) throw new Error("Empty response from LLM");
+    const content = response.choices[0].message.content;
+    if (!content) throw new Error("Empty response from LLM");
 
-        const parsed = JSON.parse(content);
-        return AnalysisSchema.parse(parsed);
-    } catch (error) {
-        console.error("OpenRouter Analysis Failed:", error);
-        console.log("Falling back to MOck data...");
-        return MOCK_ANALYSIS;
-    }
+    const parsed = JSON.parse(content);
+    return AnalysisSchema.parse(parsed);
 }

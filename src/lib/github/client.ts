@@ -44,6 +44,7 @@ export async function getRepoData(owner: string, repo: string) {
 
     return {
         name: repoData.name,
+        owner: repoData.owner.login,
         description: repoData.description,
         stars: repoData.stargazers_count,
         language: repoData.language,
