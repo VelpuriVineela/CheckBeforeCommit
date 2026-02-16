@@ -293,50 +293,59 @@ const openai = new OpenAI({
 });
 
 function detectProbableEntryPoints(tree: any[] = []): string {
-    const paths = tree.map(n => n.path);
-    const hints: string[] = [];
+    try {
+        if (!Array.isArray(tree)) {
+            return "\nDETECTION HINTS: Repository tree data is not available for entry point analysis.\n";
+        }
 
-    // Framework detection
-    if (paths.some(p => p.includes('app/page.tsx') || p.includes('app/layout.tsx'))) {
-        hints.push("- This looks like a Next.js (App Router) project. Entry points are likely app/page.tsx and app/layout.tsx.");
-    } else if (paths.some(p => p.includes('pages/_app.tsx') || p.includes('pages/index.tsx'))) {
-        hints.push("- This looks like a Next.js (Pages Router) project. Entry points are likely pages/_app.tsx and pages/index.tsx.");
-    } else if (paths.some(p => p.toLowerCase().includes('server.ts') || p.toLowerCase().includes('app.ts'))) {
-        hints.push("- This looks like an Express/Node.js server. Entry points are likely server.ts or app.ts.");
-    } else if (paths.some(p => p === 'src/index.tsx' || p === 'src/App.tsx')) {
-        hints.push("- This looks like a React SPA. Entry points are likely src/index.tsx or src/App.tsx.");
+        const paths = tree.map(n => n?.path).filter(Boolean);
+        const hints: string[] = [];
+
+        // Framework detection
+        if (paths.some(p => p?.includes('app/page.tsx') || p?.includes('app/layout.tsx'))) {
+            hints.push("- This looks like a Next.js (App Router) project. Entry points are likely app/page.tsx and app/layout.tsx.");
+        } else if (paths.some(p => p?.includes('pages/_app.tsx') || p?.includes('pages/index.tsx'))) {
+            hints.push("- This looks like a Next.js (Pages Router) project. Entry points are likely pages/_app.tsx and pages/index.tsx.");
+        } else if (paths.some(p => p?.toLowerCase()?.includes('server.ts') || p?.toLowerCase()?.includes('app.ts'))) {
+            hints.push("- This looks like an Express/Node.js server. Entry points are likely server.ts or app.ts.");
+        } else if (paths.some(p => p === 'src/index.tsx' || p === 'src/App.tsx')) {
+            hints.push("- This looks like a React SPA. Entry points are likely src/index.tsx or src/App.tsx.");
+        }
+
+        // Core Domain Detection (Heuristic)
+        const domainFiles = paths.filter(p =>
+            p?.includes('service') ||
+            p?.includes('model') ||
+            p?.includes('action') ||
+            p?.includes('logic') ||
+            p?.includes('domain')
+        ).slice(0, 3);
+
+        if (domainFiles.length > 0) {
+            hints.push(`- Potential core logic files found: ${domainFiles.join(', ')}`);
+        }
+
+        return hints.length > 0 ? `\nDETECTION HINTS (Probable Entry Points):\n${hints.join('\n')}\n` : "";
+    } catch (error) {
+        console.error("Entry point detection failed:", error);
+        return "\nDETECTION HINTS: Could not confidently detect execution flow due to unexpected data structure.\n";
     }
-
-    // Core Domain Detection (Heuristic)
-    const domainFiles = paths.filter(p =>
-        p.includes('service') ||
-        p.includes('model') ||
-        p.includes('action') ||
-        p.includes('logic') ||
-        p.includes('domain')
-    ).slice(0, 3);
-
-    if (domainFiles.length > 0) {
-        hints.push(`- Potential core logic files found: ${domainFiles.join(', ')}`);
-    }
-
-    return hints.length > 0 ? `\nDETECTION HINTS (Probable Entry Points):\n${hints.join('\n')}\n` : "";
 }
 
 export async function analyzeRepo(repoData: any) {
     const model = "openai/gpt-4o-mini"; // High performance / low cost for structured output
-    const detectionHints = detectProbableEntryPoints(repoData.tree);
+    const detectionHints = detectProbableEntryPoints(repoData?.tree);
 
     const prompt = `
 You are a Principal Software Architect performing a "Decision-Grade" technical audit.
 
 ${detectionHints}
 Codebase Context:
-- Repository Name: ${repoData.name}
-- Owner: ${repoData.owner}
-- Primary Language: ${repoData.language}
-- File Structure: ${JSON.stringify(repoData.tree || [], null, 2)}
-- Description: ${repoData.description || "No description provided."}
+- Repository Name: ${repoData?.name}
+- Owner: ${repoData?.owner}
+- Primary Language: ${repoData?.language}
+- File Structure: ${JSON.stringify(repoData?.tree || [], null, 2)}
+- Description: ${repoData?.description || "No description provided."}
 
 GOAL:
 Provide a brutal, honest, technically dense assessment of engineering quality, risks, and health.
@@ -365,7 +374,7 @@ Return a JSON object matching this EXACT structure:
 
 {
   "repoSnapshot": {
-    "description": "single descriptive string",
+    "description": "A technical briefing of the repository (5-7 meaningful lines). Explain: what the system does, core domain focus, architectural style, where most logic resides, and overall structural maturity. Avoid generic AI phrases or marketing copy. Lead with architectural facts.",
     "primaryStack": "comma-separated string",
     "architectureType": "Feature-based", // ONLY: "Feature-based" | "Layered" | "Monolithic" | "Microservices" | "Hybrid" | "Unstructured"
     "codebaseSize": "Medium", // ONLY: "Small" | "Medium" | "Large" | "Massive"

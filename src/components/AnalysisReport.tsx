@@ -118,7 +118,7 @@ function ReportHeader({ data, repoUrl }: { data: AnalysisResult, repoUrl: string
                     <Badge variant="outline" className="bg-white/50">{repoSnapshot.codebaseSize} Size</Badge>
                     <Badge className={cn(
                         "border-none",
-                        repoSnapshot.activitySignal.includes("Active") ? "bg-green-500/10 text-green-700" : "bg-amber-500/10 text-amber-700"
+                        repoSnapshot.activitySignal?.includes("Active") ? "bg-green-500/10 text-green-700" : "bg-amber-500/10 text-amber-700"
                     )}>
                         {repoSnapshot.activitySignal}
                     </Badge>
@@ -226,7 +226,7 @@ function ExecutiveVerdict({ data }: { data: AnalysisResult['executiveVerdict'] }
                     </Card>
                     <Card className={cn(
                         "flex items-center gap-4 border-l-4",
-                        data.adoptionRecommendation.includes("Safe") ? "border-l-green-500 bg-green-50" : "border-l-amber-500 bg-amber-50"
+                        data.adoptionRecommendation?.includes("Safe") ? "border-l-green-500 bg-green-50" : "border-l-amber-500 bg-amber-50"
                     )}>
                         <div>
                             <p className="text-xs text-foreground/60 uppercase font-bold">Recommendation</p>
@@ -290,7 +290,7 @@ function DependencyAnalysis({ data }: { data: AnalysisResult['dependencyAnalysis
                     </h4>
                     <p className="text-xs text-muted-foreground mb-3">Imporant files that everyone depends on.</p>
                     <ul className="space-y-2">
-                        {data.centralNodes.map((node, i) => (
+                        {data.centralNodes?.map((node, i) => (
                             <li key={i} className="text-sm font-mono bg-secondary/30 px-2 py-1 rounded truncate border border-border/50">{node}</li>
                         ))}
                     </ul>
@@ -301,7 +301,7 @@ function DependencyAnalysis({ data }: { data: AnalysisResult['dependencyAnalysis
                     </h4>
                     <p className="text-xs text-muted-foreground mb-3">Files with the heaviest import footprint.</p>
                     <ul className="space-y-2">
-                        {data.topConsumers.map((node, i) => (
+                        {data.topConsumers?.map((node, i) => (
                             <li key={i} className="text-sm font-mono bg-secondary/30 px-2 py-1 rounded truncate border border-border/50">{node}</li>
                         ))}
                     </ul>
@@ -322,7 +322,7 @@ function BlastRadius({ data }: { data: AnalysisResult['blastRadius'] }) {
                         <AlertTriangle className="w-4 h-4" /> High Impact Areas
                     </h4>
                     <ul className="space-y-2">
-                        {data.highBlastRadiusAreas.map((area, i) => (
+                        {data.highBlastRadiusAreas?.map((area, i) => (
                             <li key={i} className="text-sm text-foreground/80 flex items-start gap-2">
                                 <span className="text-red-500 mt-1">•</span>
                                 {area}
@@ -335,7 +335,7 @@ function BlastRadius({ data }: { data: AnalysisResult['blastRadius'] }) {
                         <ShieldCheck className="w-4 h-4" /> Safe Zones
                     </h4>
                     <ul className="space-y-2">
-                        {data.safeZones.map((area, i) => (
+                        {data.safeZones?.map((area, i) => (
                             <li key={i} className="text-sm text-foreground/80 flex items-start gap-2">
                                 <span className="text-green-500 mt-1">•</span>
                                 {area}
@@ -376,7 +376,7 @@ function Maintainability({ data }: { data: AnalysisResult['maintainability'] }) 
                 <div className="mt-2">
                     <h4 className="text-sm font-bold text-orange-600 uppercase tracking-wide mb-3">Debt Indicators</h4>
                     <div className="space-y-2">
-                        {data.technicalDebtIndicators.map((debt, i) => (
+                        {data.technicalDebtIndicators?.map((debt, i) => (
                             <div key={i} className="flex items-center gap-2 text-sm text-foreground/80">
                                 <Zap className="w-3 h-3 text-orange-400" />
                                 {debt}
@@ -437,7 +437,7 @@ function TestingProfile({ data }: { data: AnalysisResult['testingProfile'] }) {
                     <div>
                         <span className="text-xs font-bold uppercase text-muted-foreground">Unit Coverage</span>
                         <div className="mt-1 h-2 w-full bg-secondary rounded-full overflow-hidden">
-                            <div className="h-full bg-blue-500" style={{ width: data.unitCoverage.includes('0%') ? '5%' : '50%' }} />
+                            <div className="h-full bg-blue-500" style={{ width: data.unitCoverage?.includes('0%') ? '5%' : '50%' }} />
                         </div>
                         <p className="text-xs text-right mt-1 font-mono text-muted-foreground">{data.unitCoverage}</p>
                     </div>
@@ -518,7 +518,7 @@ function Onboarding({ data }: { data: AnalysisResult['onboarding'] }) {
                         <h4 className="text-sm font-bold text-blue-600">🎯 START HERE</h4>
                     </div>
                     <ul className="space-y-2">
-                        {data.startHere.map((file, i) => (
+                        {data.startHere?.map((file, i) => (
                             <li key={i} className="flex items-start gap-2">
                                 <ArrowRight className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
                                 <span className="text-sm text-foreground/80 code bg-blue-50 dark:bg-blue-950/30 px-2 py-1 rounded flex-1">
@@ -536,7 +536,7 @@ function Onboarding({ data }: { data: AnalysisResult['onboarding'] }) {
                         <h4 className="text-sm font-bold text-purple-600">📖 THEN READ</h4>
                     </div>
                     <ul className="space-y-2">
-                        {data.thenRead.map((file, i) => (
+                        {data.thenRead?.map((file, i) => (
                             <li key={i} className="flex items-start gap-2">
                                 <ArrowRight className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
                                 <span className="text-sm text-foreground/80 code bg-purple-50 dark:bg-purple-950/30 px-2 py-1 rounded flex-1">
@@ -566,7 +566,7 @@ function Onboarding({ data }: { data: AnalysisResult['onboarding'] }) {
                     <h4 className="text-sm font-bold text-red-600">⚠️ HIGH-RISK FILES (Avoid Initially)</h4>
                 </div>
                 <ul className="space-y-2">
-                    {data.highRiskFiles.map((file, i) => (
+                    {data.highRiskFiles?.map((file, i) => (
                         <li key={i} className="flex items-start gap-2">
                             <XCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
                             <span className="text-sm text-foreground/80 code bg-red-50 dark:bg-red-950/30 px-2 py-1 rounded flex-1">
@@ -615,7 +615,7 @@ function Improvements({ data }: { data: AnalysisResult['improvements'] }) {
         <section className="mb-16">
             <SectionHeader title="Strategic Improvement Priorities" icon={TrendingUp} />
             <div className="space-y-4">
-                {data.map((item, i) => (
+                {data?.map((item, i) => (
                     <div key={i} className="flex items-start gap-4 p-4 rounded-xl border bg-card hover:shadow-md transition-all">
                         <div className={cn("px-2 py-1 rounded text-xs font-bold uppercase",
                             item.priority === 'High' ? "bg-red-100 text-red-700" :
@@ -641,7 +641,7 @@ function FinalRecommendation({ data }: { data: AnalysisResult['finalRecommendati
                 <div>
                     <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-green-500" /> Good For</h3>
                     <div className="flex flex-wrap gap-2">
-                        {data.goodFor.map((tag, i) => (
+                        {data.goodFor?.map((tag, i) => (
                             <Badge key={i} variant="secondary" className="bg-white/10 text-white border-none hover:bg-white/20">{tag}</Badge>
                         ))}
                     </div>
@@ -650,7 +650,7 @@ function FinalRecommendation({ data }: { data: AnalysisResult['finalRecommendati
                 <div>
                     <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><AlertTriangle className="w-5 h-5 text-amber-500" /> Risky For</h3>
                     <div className="flex flex-wrap gap-2">
-                        {data.riskyFor.map((tag, i) => (
+                        {data.riskyFor?.map((tag, i) => (
                             <Badge key={i} variant="secondary" className="bg-white/10 text-white border-none hover:bg-white/20">{tag}</Badge>
                         ))}
                     </div>
@@ -671,7 +671,7 @@ export function AnalysisReport({ data, repoUrl }: { data: AnalysisResult, repoUr
     if (!data) return null;
 
     return (
-        <div className="w-full max-w-7xl mx-auto pb-32 font-sans selection:bg-primary/20">
+        <div className="w-full max-w-[1400px] mx-auto pb-32 font-sans selection:bg-primary/20">
             <ReportHeader data={data} repoUrl={repoUrl} />
             <ExecutiveVerdict data={data.executiveVerdict} />
 
