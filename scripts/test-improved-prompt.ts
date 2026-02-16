@@ -4,7 +4,7 @@ import * as path from 'path';
 // Load environment variables from .env.local FIRST
 dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 
-import { analyzeRepo, AnalysisSchema } from '../src/lib/llm/client';
+import { analyzeRepo } from '../src/lib/llm/client';
 
 async function main() {
     try {
