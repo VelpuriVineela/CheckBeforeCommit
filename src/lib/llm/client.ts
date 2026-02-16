@@ -113,11 +113,22 @@ const AnalysisSchema = z.object({
         caching: flexibleStringSchema,
     }),
 
-    // 10. Onboarding Friction Index
+    // 10. Onboarding Friction Index + 15-Minute Onboarding Path
     onboarding: z.object({
+        // Original friction metrics
         setupComplexity: createLooseEnumSchema(['Low', 'Moderate', 'High'], 'High'),
         documentationClarity: createLooseEnumSchema(['Poor', 'Average', 'Excellent'], 'Poor'),
         estimatedOnboardingTime: flexibleStringSchema,
+
+        // NEW: 15-Minute Onboarding Path
+        coreDomainSummary: flexibleStringSchema,
+        startHere: z.array(z.string()).default([]),
+        thenRead: z.array(z.string()).default([]),
+        dataFlowSummary: flexibleStringSchema,
+        highRiskFiles: z.array(z.string()).default([]),
+        firstDayAdvice: flexibleStringSchema,
+
+        // Legacy fields (keeping for backward compatibility)
         keyFilesToRead: z.array(z.string()).default([]),
         areasToAvoid: z.array(z.string()).default([]),
     }),
@@ -219,6 +230,26 @@ export const MOCK_ANALYSIS: AnalysisResult = {
         setupComplexity: "Low",
         documentationClarity: "Average",
         estimatedOnboardingTime: "1 day",
+
+        // 15-Minute Onboarding Path
+        coreDomainSummary: "This project revolves around GitHub Repository Analysis via LLM. Core domain logic is concentrated in src/app/analyze/actions.ts. Most UI components are thin wrappers around analysis results.",
+        startHere: [
+            "src/app/page.tsx (Landing page entry point)",
+            "src/app/analyze/actions.ts (Server Action orchestration)",
+        ],
+        thenRead: [
+            "src/lib/llm/client.ts (LLM integration and schema definitions)",
+            "src/lib/github/client.ts (GitHub API data fetching)",
+            "src/components/AnalysisReport.tsx (Report rendering logic)",
+        ],
+        dataFlowSummary: "User submits repo → Server Action fetches GitHub tree → LLM analyzes structure → Zod validates schema → Result rendered or saved to Supabase",
+        highRiskFiles: [
+            "src/lib/llm/client.ts (Schema changes affect entire data flow)",
+            "src/app/analyze/actions.ts (Core orchestration - high blast radius)",
+        ],
+        firstDayAdvice: "Start by reading the Server Action to understand the orchestration flow. Avoid touching LLM schema definitions until you understand validation patterns. Expect 4-6 hours to grasp the core analysis loop.",
+
+        // Legacy fields
         keyFilesToRead: [
             "src/app/analyze/actions.ts (The Brain)",
             "src/lib/llm/client.ts (The Data Contract)",
@@ -261,12 +292,45 @@ const openai = new OpenAI({
     }
 });
 
+function detectProbableEntryPoints(tree: any[] = []): string {
+    const paths = tree.map(n => n.path);
+    const hints: string[] = [];
+
+    // Framework detection
+    if (paths.some(p => p.includes('app/page.tsx') || p.includes('app/layout.tsx'))) {
+        hints.push("- This looks like a Next.js (App Router) project. Entry points are likely app/page.tsx and app/layout.tsx.");
+    } else if (paths.some(p => p.includes('pages/_app.tsx') || p.includes('pages/index.tsx'))) {
+        hints.push("- This looks like a Next.js (Pages Router) project. Entry points are likely pages/_app.tsx and pages/index.tsx.");
+    } else if (paths.some(p => p.toLowerCase().includes('server.ts') || p.toLowerCase().includes('app.ts'))) {
+        hints.push("- This looks like an Express/Node.js server. Entry points are likely server.ts or app.ts.");
+    } else if (paths.some(p => p === 'src/index.tsx' || p === 'src/App.tsx')) {
+        hints.push("- This looks like a React SPA. Entry points are likely src/index.tsx or src/App.tsx.");
+    }
+
+    // Core Domain Detection (Heuristic)
+    const domainFiles = paths.filter(p =>
+        p.includes('service') ||
+        p.includes('model') ||
+        p.includes('action') ||
+        p.includes('logic') ||
+        p.includes('domain')
+    ).slice(0, 3);
+
+    if (domainFiles.length > 0) {
+        hints.push(`- Potential core logic files found: ${domainFiles.join(', ')}`);
+    }
+
+    return hints.length > 0 ? `\nDETECTION HINTS (Probable Entry Points):\n${hints.join('\n')}\n` : "";
+}
+
 export async function analyzeRepo(repoData: any) {
     const model = "openai/gpt-4o-mini"; // High performance / low cost for structured output
+    const detectionHints = detectProbableEntryPoints(repoData.tree);
 
     const prompt = `
 You are a Principal Software Architect performing a "Decision-Grade" technical audit.
 
+${detectionHints}
 Codebase Context:
 - Repository Name: ${repoData.name}
 - Owner: ${repoData.owner}
@@ -277,12 +341,17 @@ Codebase Context:
 GOAL:
 Provide a brutal, honest, technically dense assessment of engineering quality, risks, and health.
 
+PRIMARY GOAL:
+Your #1 job is to help a new engineer UNDERSTAND this codebase in 15 minutes.
+NOT just evaluate it — ORIENT them.
+
 CRITICAL RULES:
-1. NO PLATITUDES: Say "Strict TypeScript in API layers reduces runtime regression risk" not "TypeScript adds type safety"
-2. SPECIFIC EVIDENCE: Back every claim with file paths or patterns from the file list
-3. CHANGE-CENTRIC: Focus on "Change Blast Radius" and "Refactor Risk"
-4. DECISION-FIRST: Lead to clear "Adopt", "Refactor", or "Avoid" decision
-5. TONE: Professional, concise, unsentimental
+1. ONBOARDING-FIRST: Every judgment you make should answer "Where do I start?", "What runs first?", "What's safe to touch?"
+2. NO PLATITUDES: Say "Strict TypeScript in API layers reduces runtime regression risk" not "TypeScript adds type safety"
+3. SPECIFIC EVIDENCE: Back every claim with file paths or patterns from the file list
+4. CHANGE-CENTRIC: Focus on "Change Blast Radius" and "Refactor Risk"
+5. DECISION-FIRST: Lead to clear "Adopt", "Refactor", or "Avoid" decision
+6. TONE: Professional, concise, unsentimental
 
 STRICT OUTPUT REQUIREMENTS:
 
@@ -361,6 +430,26 @@ Return a JSON object matching this EXACT structure:
     "setupComplexity": "Low", // ONLY: "Low" | "Moderate" | "High"
     "documentationClarity": "Poor", // ONLY: "Poor" | "Average" | "Excellent"
     "estimatedOnboardingTime": "string",
+    
+    // 🚀 15-MINUTE ONBOARDING PATH (NEW - CRITICAL FOR CLARITY)
+    "coreDomainSummary": "In 1-2 sentences: What does this project DO? What is the core business domain? Example: 'This project revolves around Room Management. Core domain logic is concentrated in services/roomService.ts.'",
+    "startHere": [
+      "Entry point file (e.g., app/page.tsx or server/index.ts)",
+      "Main orchestration file (e.g., where requests are handled)"
+    ],
+    "thenRead": [
+      "Core business logic file #1 (e.g., services/orderService.ts)",
+      "Domain model file #1 (e.g., models/order.ts)",
+      "Key utility/helper file (e.g., lib/validation.ts)"
+    ],
+    "dataFlowSummary": "Single line describing request → response path. Example: 'HTTP Request → API Route → Service Layer → Database → Response'",
+    "highRiskFiles": [
+      "File with high coupling or blast radius (e.g., services/paymentService.ts - affects 8 modules)",
+      "Complex configuration file to avoid initially"
+    ],
+    "firstDayAdvice": "Practical guidance for a new engineer joining. Example: 'Read the service layer files first to understand business logic. Avoid the payment module initially (high coupling). Expect 2-3 days to understand service boundaries.'",
+    
+    // Legacy fields (keep for backward compatibility)
     "keyFilesToRead": ["array of strings"],
     "areasToAvoid": ["array of strings"]
   },

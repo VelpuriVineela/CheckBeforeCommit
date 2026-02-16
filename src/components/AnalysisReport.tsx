@@ -494,38 +494,116 @@ function Scalability({ data }: { data: AnalysisResult['scalability'] }) {
 function Onboarding({ data }: { data: AnalysisResult['onboarding'] }) {
     return (
         <section className="mb-16">
-            <SectionHeader title="Onboarding Friction Index" icon={Users} />
-            <div className="grid md:grid-cols-3 gap-6 mb-6">
-                <Card className="text-center">
-                    <p className="text-xs font-bold uppercase text-muted-foreground mb-1">Complexity</p>
-                    <p className="font-bold text-lg">{data.setupComplexity}</p>
+            <SectionHeader title="🚀 15-Minute Onboarding Path" icon={Users} />
+
+            {/* Core Domain Summary - Prominent Header */}
+            <Card variant="success" className="mb-6 border-l-4 border-l-green-500">
+                <div className="flex items-start gap-3">
+                    <div className="text-green-600 mt-1">
+                        <Globe className="w-5 h-5" />
+                    </div>
+                    <div>
+                        <h4 className="text-sm font-bold text-green-600 mb-2">🧠 Core Domain Summary</h4>
+                        <p className="text-sm text-foreground/90 leading-relaxed">{data.coreDomainSummary}</p>
+                    </div>
+                </div>
+            </Card>
+
+            {/* START HERE + THEN READ - Two Column Layout */}
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+                {/* START HERE */}
+                <Card className="border-l-4 border-l-blue-500">
+                    <div className="flex items-center gap-2 mb-3">
+                        <Play className="w-4 h-4 text-blue-600" />
+                        <h4 className="text-sm font-bold text-blue-600">🎯 START HERE</h4>
+                    </div>
+                    <ul className="space-y-2">
+                        {data.startHere.map((file, i) => (
+                            <li key={i} className="flex items-start gap-2">
+                                <ArrowRight className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                                <span className="text-sm text-foreground/80 code bg-blue-50 dark:bg-blue-950/30 px-2 py-1 rounded flex-1">
+                                    {file}
+                                </span>
+                            </li>
+                        ))}
+                    </ul>
                 </Card>
-                <Card className="text-center">
-                    <p className="text-xs font-bold uppercase text-muted-foreground mb-1">Docs</p>
-                    <p className="font-bold text-lg">{data.documentationClarity}</p>
-                </Card>
-                <Card className="text-center">
-                    <p className="text-xs font-bold uppercase text-muted-foreground mb-1">Ramp Up</p>
-                    <p className="font-bold text-lg">{data.estimatedOnboardingTime}</p>
+
+                {/* THEN READ */}
+                <Card className="border-l-4 border-l-purple-500">
+                    <div className="flex items-center gap-2 mb-3">
+                        <BookOpen className="w-4 h-4 text-purple-600" />
+                        <h4 className="text-sm font-bold text-purple-600">📖 THEN READ</h4>
+                    </div>
+                    <ul className="space-y-2">
+                        {data.thenRead.map((file, i) => (
+                            <li key={i} className="flex items-start gap-2">
+                                <ArrowRight className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
+                                <span className="text-sm text-foreground/80 code bg-purple-50 dark:bg-purple-950/30 px-2 py-1 rounded flex-1">
+                                    {file}
+                                </span>
+                            </li>
+                        ))}
+                    </ul>
                 </Card>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                    <h4 className="text-sm font-bold text-green-600 mb-3 flex items-center gap-2"><BookOpen className="w-4 h-4" /> Read These First</h4>
-                    <ul className="space-y-2">
-                        {data.keyFilesToRead.map((f, i) => (
-                            <li key={i} className="text-sm text-foreground/80 code bg-secondary/30 px-2 py-1 rounded w-fit">{f}</li>
-                        ))}
-                    </ul>
+            {/* DATA FLOW */}
+            <Card className="mb-6 bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-950/20 dark:to-blue-950/20 border-l-4 border-l-cyan-500">
+                <div className="flex items-start gap-3">
+                    <Zap className="w-5 h-5 text-cyan-600 mt-0.5" />
+                    <div className="flex-1">
+                        <h4 className="text-sm font-bold text-cyan-600 mb-2">⚡ DATA FLOW</h4>
+                        <p className="text-sm font-mono text-foreground/90 leading-relaxed">{data.dataFlowSummary}</p>
+                    </div>
                 </div>
-                <div>
-                    <h4 className="text-sm font-bold text-red-600 mb-3 flex items-center gap-2"><XCircle className="w-4 h-4" /> Avoid Initially</h4>
-                    <ul className="space-y-2">
-                        {data.areasToAvoid.map((f, i) => (
-                            <li key={i} className="text-sm text-foreground/80 code bg-secondary/30 px-2 py-1 rounded w-fit">{f}</li>
-                        ))}
-                    </ul>
+            </Card>
+
+            {/* HIGH-RISK FILES */}
+            <Card variant="danger" className="mb-6 border-l-4 border-l-red-500">
+                <div className="flex items-center gap-2 mb-3">
+                    <AlertTriangle className="w-4 h-4 text-red-600" />
+                    <h4 className="text-sm font-bold text-red-600">⚠️ HIGH-RISK FILES (Avoid Initially)</h4>
+                </div>
+                <ul className="space-y-2">
+                    {data.highRiskFiles.map((file, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                            <XCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm text-foreground/80 code bg-red-50 dark:bg-red-950/30 px-2 py-1 rounded flex-1">
+                                {file}
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            </Card>
+
+            {/* FIRST DAY ADVICE */}
+            <Card variant="warning" className="mb-6 border-l-4 border-l-amber-500">
+                <div className="flex items-start gap-3">
+                    <Construction className="w-5 h-5 text-amber-600 mt-0.5" />
+                    <div className="flex-1">
+                        <h4 className="text-sm font-bold text-amber-600 mb-2">💡 If You're Joining This Project</h4>
+                        <p className="text-sm text-foreground/90 leading-relaxed">{data.firstDayAdvice}</p>
+                    </div>
+                </div>
+            </Card>
+
+            {/* Original Friction Metrics */}
+            <div className="pt-6 border-t border-border">
+                <h4 className="text-xs font-bold uppercase text-muted-foreground mb-4">Onboarding Friction Index</h4>
+                <div className="grid md:grid-cols-3 gap-6">
+                    <Card className="text-center">
+                        <p className="text-xs font-bold uppercase text-muted-foreground mb-1">Complexity</p>
+                        <p className="font-bold text-lg">{data.setupComplexity}</p>
+                    </Card>
+                    <Card className="text-center">
+                        <p className="text-xs font-bold uppercase text-muted-foreground mb-1">Docs</p>
+                        <p className="font-bold text-lg">{data.documentationClarity}</p>
+                    </Card>
+                    <Card className="text-center">
+                        <p className="text-xs font-bold uppercase text-muted-foreground mb-1">Ramp Up</p>
+                        <p className="font-bold text-lg">{data.estimatedOnboardingTime}</p>
+                    </Card>
                 </div>
             </div>
         </section>
@@ -597,6 +675,9 @@ export function AnalysisReport({ data, repoUrl }: { data: AnalysisResult, repoUr
             <ReportHeader data={data} repoUrl={repoUrl} />
             <ExecutiveVerdict data={data.executiveVerdict} />
 
+            {/* 🚀 15-Minute Onboarding Path - Positioned prominently after verdict */}
+            <Onboarding data={data.onboarding} />
+
             <div className="grid gap-2">
                 <ArchitecturalHealth data={data.architecturalHealth} />
                 <DependencyAnalysis data={data.dependencyAnalysis} />
@@ -607,7 +688,6 @@ export function AnalysisReport({ data, repoUrl }: { data: AnalysisResult, repoUr
                     <TestingProfile data={data.testingProfile} />
                 </div>
                 <Scalability data={data.scalability} />
-                <Onboarding data={data.onboarding} />
                 <Improvements data={data.improvements} />
                 <FinalRecommendation data={data.finalRecommendation} />
             </div>
