@@ -42,11 +42,6 @@ export default function Home() {
     const checkUser = async () => {
       const { data: { user: currentUser } } = await supabase.auth.getUser();
       setUser(currentUser);
-
-      // Auto-redirect authenticated users to dashboard
-      if (currentUser) {
-        router.push('/dashboard');
-      }
     };
     checkUser();
 
@@ -610,6 +605,8 @@ export default function Home() {
               <ul className="space-y-4 text-sm text-[#1A1A1A]/50">
                 <li><Link href="#how-it-works" className="hover:text-[#FF7D29] transition-colors">How It Works</Link></li>
                 <li><Link href="#pricing" className="hover:text-[#FF7D29] transition-colors">Pricing</Link></li>
+                <li><Link href="/docs" className="hover:text-[#FF7D29] transition-colors">Docs</Link></li>
+                <li><Link href="/changelog" className="hover:text-[#FF7D29] transition-colors">Changelog</Link></li>
               </ul>
             </div>
 
@@ -617,6 +614,8 @@ export default function Home() {
             <div className="space-y-6">
               <h4 className="text-xs font-bold uppercase tracking-widest text-[#1A1A1A]/90">Legal</h4>
               <ul className="space-y-4 text-sm text-[#1A1A1A]/50">
+                <li><Link href="/tos" className="hover:text-[#FF7D29] transition-colors">Terms of Service</Link></li>
+                <li><Link href="/privacy" className="hover:text-[#FF7D29] transition-colors">Privacy Policy</Link></li>
                 <li><Link href="mailto:support@checkbeforecommit.com" className="hover:text-[#FF7D29] transition-colors">Contact</Link></li>
               </ul>
             </div>
