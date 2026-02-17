@@ -34,7 +34,7 @@ function Card({ children, className, variant = "default" }: { children: React.Re
     };
 
     return (
-        <div className={cn("rounded-xl border p-5 transition-all relative overflow-hidden", variants[variant], className)}>
+        <div className={cn("rounded-xl border p-5 transition-all relative", variants[variant], className)}>
             {children}
         </div>
     );
@@ -68,8 +68,8 @@ function TrafficLight({ level }: { level: string }) {
 function ContextTooltip({ text }: { text: string }) {
     if (!text) return null;
     return (
-        <div className="absolute inset-0 bg-popover/95 backdrop-blur-sm p-4 flex flex-col justify-center items-center text-center opacity-0 hover:opacity-100 transition-opacity z-10 cursor-help">
-            <p className="text-sm font-medium text-popover-foreground">{text}</p>
+        <div className="absolute inset-0 bg-popover/98 backdrop-blur-md p-4 flex flex-col justify-center items-center text-center opacity-0 hover:opacity-100 transition-opacity z-[100] cursor-help rounded-xl">
+            <p className="text-sm font-semibold text-popover-foreground max-w-sm leading-relaxed">{text}</p>
         </div>
     );
 }
@@ -291,7 +291,7 @@ function DependencyAnalysis({ data }: { data: AnalysisResult['dependencyAnalysis
                     <p className="text-xs text-muted-foreground mb-3">Imporant files that everyone depends on.</p>
                     <ul className="space-y-2">
                         {data.centralNodes?.map((node, i) => (
-                            <li key={i} className="text-sm font-mono bg-secondary/30 px-2 py-1 rounded truncate border border-border/50">{node}</li>
+                            <li key={i} className="text-sm font-mono bg-secondary/30 px-2 py-1 rounded break-all border border-border/50">{node}</li>
                         ))}
                     </ul>
                 </Card>
@@ -302,7 +302,7 @@ function DependencyAnalysis({ data }: { data: AnalysisResult['dependencyAnalysis
                     <p className="text-xs text-muted-foreground mb-3">Files with the heaviest import footprint.</p>
                     <ul className="space-y-2">
                         {data.topConsumers?.map((node, i) => (
-                            <li key={i} className="text-sm font-mono bg-secondary/30 px-2 py-1 rounded truncate border border-border/50">{node}</li>
+                            <li key={i} className="text-sm font-mono bg-secondary/30 px-2 py-1 rounded break-all border border-border/50">{node}</li>
                         ))}
                     </ul>
                 </Card>
@@ -671,7 +671,7 @@ export function AnalysisReport({ data, repoUrl }: { data: AnalysisResult, repoUr
     if (!data) return null;
 
     return (
-        <div className="w-full max-w-[1400px] mx-auto pb-32 font-sans selection:bg-primary/20">
+        <div className="w-full max-w-6xl mx-auto pb-32 font-sans selection:bg-primary/20">
             <ReportHeader data={data} repoUrl={repoUrl} />
             <ExecutiveVerdict data={data.executiveVerdict} />
 

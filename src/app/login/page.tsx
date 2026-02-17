@@ -130,7 +130,7 @@ function LoginContent() {
                             Start knowing.
                         </h2>
                         <p className="text-white/80 text-xl font-medium leading-relaxed max-w-md">
-                            Join over 2,000+ engineers who use our structured insights to master technical complexity.
+                            Get structured technical insights to master technical complexity and understand any codebase in minutes.
                         </p>
                     </div>
 

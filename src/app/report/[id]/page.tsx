@@ -42,10 +42,7 @@ export default async function ReportPage({ params: paramsPromise }: ReportPagePr
                         <ArrowLeft className="w-3 h-3" />
                         {user ? 'Back to Dashboard' : 'Back to Home'}
                     </Link>
-                    <Button variant="ghost" size="sm" className="text-muted-foreground gap-2 h-8 text-xs">
-                        <Share2 className="w-3 h-3" />
-                        Share
-                    </Button>
+
                 </div>
             </div>
 
