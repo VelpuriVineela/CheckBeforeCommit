@@ -102,27 +102,3 @@ export async function runAnalysis(analysisId: string, repoUrl: string) {
         return { success: false, error: err.message };
     }
 }
-
-/**
- * 3. deleteAnalysis
- * Removes an analysis record from the database.
- */
-export async function deleteAnalysis(analysisId: string) {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) throw new Error("Unauthorized");
-
-    const { error } = await supabase
-        .from("analyses")
-        .delete()
-        .eq('id', analysisId)
-        .eq('user_id', user.id);
-
-    if (error) {
-        console.error("Failed to delete analysis:", error);
-        throw new Error(`Database error: ${error.message}`);
-    }
-
-    return { success: true };
-}

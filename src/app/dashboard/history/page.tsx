@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { Github, ExternalLink, Clock, Search, History } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { DeleteAnalysisButton } from '@/components/dashboard/DeleteAnalysisButton';
 
 export default async function HistoryPage() {
     const supabase = await createClient();
@@ -45,12 +44,11 @@ export default async function HistoryPage() {
                     <p className="text-xs text-muted-foreground max-w-[200px] mx-auto">Start by analyzing your first repository from the dashboard.</p>
                 </div>
             ) : (
-                <div className="border border-border/40 rounded-xl overflow-hidden bg-white shadow-sm overflow-x-auto">
-                    <table className="w-full text-left text-sm min-w-[800px]">
+                <div className="border border-border/40 rounded-xl overflow-hidden bg-white shadow-sm">
+                    <table className="w-full text-left text-sm">
                         <thead className="bg-[#F7F7F7] border-b border-[#1A1A1A]/5">
                             <tr>
                                 <th className="px-6 py-4 font-semibold text-[#1A1A1A]/70">Repository</th>
-                                <th className="px-6 py-4 font-semibold text-[#1A1A1A]/70">Summary</th>
                                 <th className="px-6 py-4 font-semibold text-[#1A1A1A]/70">Status</th>
                                 <th className="px-6 py-4 font-semibold text-[#1A1A1A]/70 text-right">Analyzed On</th>
                                 <th className="px-6 py-4"></th>
@@ -65,27 +63,15 @@ export default async function HistoryPage() {
                                     year: 'numeric'
                                 });
 
-                                // Extract summary or arch type from nested JSON result
-                                const result = analysis.result as any;
-                                const summary = result?.repoSnapshot?.description ||
-                                    result?.onboarding?.coreDomainSummary ||
-                                    result?.repoSnapshot?.architectureType ||
-                                    "-";
-
                                 return (
                                     <tr key={analysis.id} className="group hover:bg-[#FFF5ED] transition-colors">
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded-lg bg-white border border-[#1A1A1A]/10 flex items-center justify-center shrink-0">
+                                                <div className="w-8 h-8 rounded-lg bg-white border border-[#1A1A1A]/10 flex items-center justify-center">
                                                     <Github className="w-4 h-4 text-[#1A1A1A]/40 group-hover:text-[#FF7D29] transition-colors" />
                                                 </div>
-                                                <span className="font-medium text-[#1A1A1A] group-hover:text-[#FF7D29] transition-colors truncate max-w-[200px]">{repoName}</span>
+                                                <span className="font-medium text-[#1A1A1A] group-hover:text-[#FF7D29] transition-colors">{repoName}</span>
                                             </div>
-                                        </td>
-                                        <td className="px-6 py-4 max-w-[300px]">
-                                            <p className="text-xs text-[#1A1A1A]/60 line-clamp-2 leading-relaxed">
-                                                {summary}
-                                            </p>
                                         </td>
                                         <td className="px-6 py-4">
                                             <Badge variant={analysis.status === 'completed' ? 'secondary' : analysis.status === 'failed' ? 'destructive' : 'outline'} className="text-[10px] h-4 px-1.5 font-bold uppercase tracking-wider bg-[#F4F4F5] text-[#1A1A1A] border-none">
@@ -96,12 +82,9 @@ export default async function HistoryPage() {
                                             {date}
                                         </td>
                                         <td className="px-6 py-4 text-right">
-                                            <div className="flex items-center justify-end gap-2">
-                                                <Link href={`/report/${analysis.id}`} className="inline-flex items-center justify-center w-8 h-8 rounded-md hover:bg-[#FF7D29]/10 text-[#1A1A1A]/40 hover:text-[#FF7D29] transition-all">
-                                                    <ExternalLink className="w-4 h-4" />
-                                                </Link>
-                                                <DeleteAnalysisButton analysisId={analysis.id} />
-                                            </div>
+                                            <Link href={`/report/${analysis.id}`} className="inline-flex items-center justify-center w-8 h-8 rounded-md hover:bg-[#FF7D29]/10 text-[#1A1A1A]/40 hover:text-[#FF7D29] transition-all">
+                                                <ExternalLink className="w-4 h-4" />
+                                            </Link>
                                         </td>
                                     </tr>
                                 );

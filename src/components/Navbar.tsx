@@ -43,7 +43,7 @@ export function Navbar({ user, freeTries }: NavbarProps) {
                 <div className="flex items-center gap-2 font-bold text-xl tracking-tight text-foreground">
                     <CheckCircle2 className="text-primary w-6 h-6" />
                     <span className="hidden sm:inline">CheckBeforeCommit</span>
-                    <span className="sm:hidden text-primary font-bold">checkbeforecommit</span>
+                    <span className="sm:hidden text-primary">CBC</span>
                 </div>
                 <div className="h-9 w-20 bg-secondary/20 rounded animate-pulse" />
             </nav>
@@ -55,7 +55,7 @@ export function Navbar({ user, freeTries }: NavbarProps) {
             <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight text-foreground hover:opacity-90 transition-opacity">
                 <CheckCircle2 className="text-primary w-6 h-6" />
                 <span className="hidden sm:inline">CheckBeforeCommit</span>
-                <span className="sm:hidden text-primary font-bold">checkbeforecommit</span>
+                <span className="sm:hidden text-primary">CBC</span>
             </Link>
 
             <div className="flex items-center gap-4">

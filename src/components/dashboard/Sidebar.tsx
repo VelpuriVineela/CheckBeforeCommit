@@ -20,7 +20,7 @@ export function Sidebar() {
             <div className="p-6 border-b border-border/20 flex items-center gap-2">
                 <Link href="/dashboard" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
                     <CheckCircle2 className="text-primary w-6 h-6" />
-                    <span className="font-bold text-lg tracking-tight">CheckBeforeCommit</span>
+                    <span className="font-bold text-lg tracking-tight">CBC</span>
                 </Link>
             </div>
 
