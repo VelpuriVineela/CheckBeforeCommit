@@ -130,7 +130,7 @@ function LoginContent() {
                             Start knowing.
                         </h2>
                         <p className="text-white/80 text-xl font-medium leading-relaxed max-w-md">
-                            Join over 2,000+ engineers who use our structured insights to master technical complexity.
+                            Get a structured technical breakdown of any GitHub repository in minutes.
                         </p>
                     </div>
 

@@ -68,8 +68,8 @@ function TrafficLight({ level }: { level: string }) {
 function ContextTooltip({ text }: { text: string }) {
     if (!text) return null;
     return (
-        <div className="absolute inset-0 bg-popover/95 backdrop-blur-sm p-4 flex flex-col justify-center items-center text-center opacity-0 hover:opacity-100 transition-opacity z-10 cursor-help">
-            <p className="text-sm font-medium text-popover-foreground">{text}</p>
+        <div className="absolute inset-0 bg-white/95 backdrop-blur-sm p-6 flex flex-col justify-center items-center text-center opacity-0 hover:opacity-100 transition-all duration-300 z-10 cursor-help border border-primary/10">
+            <p className="text-sm font-semibold text-primary leading-relaxed">{text}</p>
         </div>
     );
 }
@@ -591,18 +591,18 @@ function Onboarding({ data }: { data: AnalysisResult['onboarding'] }) {
             {/* Original Friction Metrics */}
             <div className="pt-6 border-t border-border">
                 <h4 className="text-xs font-bold uppercase text-muted-foreground mb-4">Onboarding Friction Index</h4>
-                <div className="grid md:grid-cols-3 gap-6">
-                    <Card className="text-center">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <Card className="text-center p-6 bg-secondary/5 border-none">
                         <p className="text-xs font-bold uppercase text-muted-foreground mb-1">Complexity</p>
-                        <p className="font-bold text-lg">{data.setupComplexity}</p>
+                        <p className="font-bold text-lg text-foreground">{data.setupComplexity}</p>
                     </Card>
-                    <Card className="text-center">
+                    <Card className="text-center p-6 bg-secondary/5 border-none">
                         <p className="text-xs font-bold uppercase text-muted-foreground mb-1">Docs</p>
-                        <p className="font-bold text-lg">{data.documentationClarity}</p>
+                        <p className="font-bold text-lg text-foreground">{data.documentationClarity}</p>
                     </Card>
-                    <Card className="text-center">
+                    <Card className="text-center p-6 bg-secondary/5 border-none">
                         <p className="text-xs font-bold uppercase text-muted-foreground mb-1">Ramp Up</p>
-                        <p className="font-bold text-lg">{data.estimatedOnboardingTime}</p>
+                        <p className="font-bold text-lg text-foreground">{data.estimatedOnboardingTime}</p>
                     </Card>
                 </div>
             </div>
@@ -671,7 +671,7 @@ export function AnalysisReport({ data, repoUrl }: { data: AnalysisResult, repoUr
     if (!data) return null;
 
     return (
-        <div className="w-full max-w-[1400px] mx-auto pb-32 font-sans selection:bg-primary/20">
+        <div className="w-full pb-32 font-sans selection:bg-primary/20 space-y-12">
             <ReportHeader data={data} repoUrl={repoUrl} />
             <ExecutiveVerdict data={data.executiveVerdict} />
 

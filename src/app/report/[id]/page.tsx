@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ArrowLeft, Share2 } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
+import { ShareButton } from '@/components/ShareButton';
 
 interface ReportPageProps {
     params: {
@@ -37,19 +38,16 @@ export default async function ReportPage({ params: paramsPromise }: ReportPagePr
             <Navbar user={user} />
 
             <div className="border-b border-border/40 bg-secondary/5">
-                <div className="max-w-4xl mx-auto px-6 py-3 flex justify-between items-center">
-                    <Link href={user ? "/dashboard" : "/"} className="flex items-center gap-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">
-                        <ArrowLeft className="w-3 h-3" />
+                <div className="max-w-[1600px] mx-auto px-6 py-3 flex justify-between items-center">
+                    <Link href={user ? "/dashboard" : "/"} className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors group">
+                        <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
                         {user ? 'Back to Dashboard' : 'Back to Home'}
                     </Link>
-                    <Button variant="ghost" size="sm" className="text-muted-foreground gap-2 h-8 text-xs">
-                        <Share2 className="w-3 h-3" />
-                        Share
-                    </Button>
+                    <ShareButton />
                 </div>
             </div>
 
-            <main className="max-w-4xl mx-auto px-6 py-12">
+            <main className="max-w-[1600px] mx-auto px-6 py-12">
                 {isCompleted && result ? (
                     <AnalysisReport data={result} repoUrl={analysis.repo_url} />
                 ) : (
