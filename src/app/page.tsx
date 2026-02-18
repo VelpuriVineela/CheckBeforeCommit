@@ -39,13 +39,19 @@ export default function Home() {
     setIsMounted(true);
     const supabase = createClient();
 
-    const checkUser = async () => {
+    const checkUserAndRedirect = async () => {
       const { data: { user: currentUser } } = await supabase.auth.getUser();
+      if (currentUser) {
+        router.push('/dashboard');
+      }
       setUser(currentUser);
     };
-    checkUser();
+    checkUserAndRedirect();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        router.push('/dashboard');
+      }
       setUser(session?.user ?? null);
     });
 
@@ -58,7 +64,7 @@ export default function Home() {
       subscription.unsubscribe();
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [router]);
 
   const handleInitialAnalyze = (e: React.FormEvent) => {
     e.preventDefault();
@@ -142,196 +148,78 @@ export default function Home() {
           </CTASection>
         </div>
 
-        {/* Problem Section: Two-Column Layout */}
+        {/* Built for Engineers Section */}
         <section className="py-[120px] border-y border-[#1A1A1A]/5">
-          <div className="max-w-[1200px] mx-auto px-6 grid md:grid-cols-[60%_40%] gap-16 items-center">
+          <div className="max-w-[1100px] mx-auto px-6 space-y-16">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-[#1A1A1A] text-center">
+              Built for Engineers Who Don't Have Time to Guess
+            </h2>
 
-            {/* Left: Friction Bullets */}
-            <div className="space-y-10">
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-[#1A1A1A] leading-tight">
-                Stop Wasting Hours Reading Code Blindly.
-              </h2>
-
-              <div className="relative pl-8 space-y-6">
-                <div className="absolute left-0 top-2 bottom-2 w-[2px] bg-[#FF7D29]" />
-                {[
-                  "Untangling cryptic folder hierarchies without context.",
-                  "Scanning stale READMEs that don't match the code.",
-                  "Tracing deep imports just to find the actual entry point.",
-                  "Building mental maps that vanish by the next morning.",
-                  "Guessing the impact of changes in high-risk modules."
-                ].map((item, idx) => (
-                  <p key={idx} className="text-xl text-[#1A1A1A]/70 font-medium">
-                    {item}
-                  </p>
-                ))}
-              </div>
-            </div>
-
-            {/* Right: GitHub File Explorer Mockup */}
-            <div className="relative group">
-              <div className="bg-[#F8F9FA] border border-[#1A1A1A]/10 rounded-2xl overflow-hidden shadow-xl aspect-[4/5] flex flex-col blur-[2px] opacity-60 transition-all duration-700 select-none">
-                {/* Mockup Header */}
-                <div className="px-4 py-3 border-b border-[#1A1A1A]/5 flex items-center gap-2 bg-white">
-                  <div className="flex gap-1.5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#1A1A1A]/10" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#1A1A1A]/10" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#1A1A1A]/10" />
-                  </div>
-                  <div className="ml-4 h-3 w-32 bg-[#1A1A1A]/5 rounded" />
-                </div>
-
-                {/* Mockup Tree */}
-                <div className="p-4 space-y-4 overflow-y-auto">
-                  {[
-                    { type: 'folder', name: 'src', open: true, depth: 0 },
-                    { type: 'folder', name: 'core', open: true, depth: 1 },
-                    { type: 'file', name: 'engine.ts', depth: 2 },
-                    { type: 'folder', name: 'utils', open: false, depth: 2 },
-                    { type: 'file', name: 'types.d.ts', depth: 2 },
-                    { type: 'folder', name: 'services', open: true, depth: 1 },
-                    { type: 'file', name: 'auth.service.ts', depth: 2 },
-                    { type: 'file', name: 'data.service.ts', depth: 2 },
-                    { type: 'folder', name: 'internal', open: true, depth: 2 },
-                    { type: 'file', name: 'proxy.js', depth: 3 },
-                    { type: 'folder', name: 'infrastructure', open: false, depth: 0 },
-                    { type: 'folder', name: 'tests', open: false, depth: 0 },
-                    { type: 'file', name: 'package.json', depth: 0 },
-                    { type: 'file', name: 'README.md', depth: 0 },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-2" style={{ paddingLeft: `${item.depth * 16}px` }}>
-                      {item.type === 'folder' ? (
-                        <>
-                          {item.open ? <ChevronDown className="w-4 h-4 text-[#1A1A1A]/30" /> : <ChevronRight className="w-4 h-4 text-[#1A1A1A]/30" />}
-                          <Folder className="w-4 h-4 text-[#FF7D29]/60" />
-                        </>
-                      ) : (
-                        <>
-                          <div className="w-4 h-4" /> {/* Spacer */}
-                          <FileText className="w-4 h-4 text-[#1A1A1A]/40" />
-                        </>
-                      )}
-                      <span className="text-sm font-medium text-[#1A1A1A]/50">{item.name}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Overlay Prompt */}
-              <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
-                <div className="bg-white/90 backdrop-blur-sm border border-[#FF7D29]/20 px-8 py-6 rounded-2xl shadow-2xl ring-1 ring-[#FF7D29]/10 transform -rotate-1">
-                  <p className="text-xl md:text-2xl font-bold text-[#1A1A1A] tracking-tight">
-                    "Where do you even start?"
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  title: "Adopting a repo?",
+                  text: "Know architectural risk before committing."
+                },
+                {
+                  title: "Joining a team?",
+                  text: "Understand the system before your first PR."
+                },
+                {
+                  title: "Refactoring?",
+                  text: "Measure coupling and blast radius first."
+                }
+              ].map((block, idx) => (
+                <div key={idx} className="space-y-2 p-6 rounded-xl border border-[#1A1A1A]/5 bg-white shadow-sm">
+                  <h3 className="text-lg font-bold text-[#1A1A1A]">{block.title}</h3>
+                  <p className="text-[#1A1A1A]/60 leading-relaxed">
+                    {block.text}
                   </p>
                 </div>
-              </div>
+              ))}
             </div>
-
           </div>
         </section>
 
-        {/* Solution Section: Redesigned "What You Get" */}
-        <section className="py-[140px] bg-white border-b border-[#1A1A1A]/5">
-          <div className="max-w-[1200px] mx-auto px-6 grid md:grid-cols-[55%_45%] gap-20 items-start">
+        {/* What You Actually Get Section */}
+        <section className="py-[120px] bg-white border-b border-[#1A1A1A]/5">
+          <div className="max-w-[1100px] mx-auto px-6 space-y-16">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-[#1A1A1A] text-center">
+              What You Actually Get
+            </h2>
 
-            {/* Left: Structured Features */}
-            <div className="space-y-12">
-              <div className="space-y-4">
-                <h2 className="text-4xl font-bold tracking-tight text-[#1A1A1A]">
-                  What You Get From Every Analysis
-                </h2>
-                <p className="text-lg text-[#1A1A1A]/60 max-w-md">
-                  A high-fidelity mental model of the codebase, generated in seconds.
-                </p>
-              </div>
-
-              <div className="space-y-0">
-                {[
-                  { icon: Map, title: "Architecture Overview", desc: "The core design patterns and high-level structural intent." },
-                  { icon: Compass, title: "Entry Points", desc: "Critical initialization paths and primary API surfaces." },
-                  { icon: Code2, title: "Code Structure Breakdown", desc: "Detailed mapping of how modules interact and where logic lives." },
-                  { icon: BarChart3, title: "Maintainability Signals", desc: "Technical debt assessment and module coupling analysis." },
-                  { icon: ShieldAlert, title: "Hidden Complexity & Risks", desc: "Early warning on fragile modules and integration hazards." },
-                  { icon: Search, title: "Suggested Learning Path", desc: "A step-by-step roadmap for code review and onboarding." },
-                ].map((item, i) => (
-                  <div key={i} className={`py-5 flex gap-5 ${i !== 0 ? 'border-t border-[#1A1A1A]/5' : ''}`}>
-                    <div className="mt-1 w-8 h-8 rounded-lg bg-[#FF7D29]/5 flex items-center justify-center shrink-0 border border-[#FF7D29]/10">
-                      <item.icon className="w-4 h-4 text-[#FF7D29]" />
-                    </div>
-                    <div>
-                      <h3 className="text-base font-bold text-[#1A1A1A] mb-1">{item.title}</h3>
-                      <p className="text-sm text-[#1A1A1A]/60">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                {
+                  title: "Architecture Map",
+                  details: ["Core modules", "Dependency flow", "Entry points"]
+                },
+                {
+                  title: "Risk Analysis",
+                  details: ["Coupling hotspots", "Refactor safety score", "Change blast radius"]
+                },
+                {
+                  title: "Engineering Quality",
+                  details: ["Maintainability score", "Modularity assessment", "Structural complexity"]
+                },
+                {
+                  title: "15-Min Onboarding",
+                  details: ["Where to start", "What to read first", "What to avoid"]
+                }
+              ].map((card, idx) => (
+                <div key={idx} className="p-8 rounded-2xl border border-[#1A1A1A]/5 bg-[#FAFAFA] space-y-4">
+                  <h3 className="text-lg font-bold text-[#1A1A1A]">{card.title}</h3>
+                  <ul className="space-y-2">
+                    {card.details.map((detail, dIdx) => (
+                      <li key={dIdx} className="text-sm text-[#1A1A1A]/60 flex items-center gap-2">
+                        <div className="w-1 h-1 rounded-full bg-[#1A1A1A]/20" />
+                        {detail}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
-
-            {/* Right: Product Result Preview */}
-            <div className="relative bg-[#F8F9FA] rounded-xl border border-[#1A1A1A]/10 p-8 min-h-[500px] flex flex-col gap-6">
-              <div className="absolute top-6 right-6 px-3 py-1 bg-[#10B981]/10 border border-[#10B981]/20 rounded-full flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 bg-[#10B981] rounded-full" />
-                <span className="text-[10px] font-bold text-[#10B981] uppercase tracking-wider">Analysis Complete</span>
-              </div>
-
-              {/* Card 1: Architecture Overview */}
-              <div className="bg-white border border-[#1A1A1A]/5 rounded-lg p-5 shadow-sm space-y-3">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-4 h-4 rounded-sm bg-[#FF7D29]/10 border border-[#FF7D29]/20 flex items-center justify-center">
-                    <div className="w-1.5 h-1.5 bg-[#FF7D29] rounded-[1px]" />
-                  </div>
-                  <span className="text-xs font-bold text-[#1A1A1A]">Architecture Overview</span>
-                </div>
-                <div className="space-y-2">
-                  <div className="h-2 w-full bg-[#1A1A1A]/5 rounded" />
-                  <div className="h-2 w-4/5 bg-[#1A1A1A]/5 rounded" />
-                  <div className="h-2 w-2/3 bg-[#1A1A1A]/5 rounded" />
-                </div>
-              </div>
-
-              {/* Card 2: Risk & Complexity */}
-              <div className="bg-white border border-[#1A1A1A]/5 rounded-lg p-5 shadow-sm space-y-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-4 h-4 rounded-sm bg-[#FF7D29]/10 border border-[#FF7D29]/20 flex items-center justify-center">
-                    <ShieldAlert className="w-2.5 h-2.5 text-[#FF7D29]" />
-                  </div>
-                  <span className="text-xs font-bold text-[#1A1A1A]">Risk & Complexity Signals</span>
-                </div>
-                <div className="space-y-3">
-                  {[
-                    { color: "bg-[#EF4444]", text: "Fragile Module Found: /core/dispatcher.ts" },
-                    { color: "bg-[#F59E0B]", text: "High Coupling Detected in /services/auth" }
-                  ].map((risk, i) => (
-                    <div key={i} className="flex items-center gap-3">
-                      <div className={`w-1.5 h-1.5 rounded-full ${risk.color}`} />
-                      <div className="h-2 flex-1 bg-[#1A1A1A]/5 rounded" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Card 3: Suggested Entry Path */}
-              <div className="bg-white border border-[#1A1A1A]/5 rounded-lg p-5 shadow-sm space-y-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-4 h-4 rounded-sm bg-[#FF7D29]/10 border border-[#FF7D29]/20 flex items-center justify-center">
-                    <Search className="w-2.5 h-2.5 text-[#FF7D29]" />
-                  </div>
-                  <span className="text-xs font-bold text-[#1A1A1A]">Suggested Entry Path</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  {[1, 2, 3].map((step) => (
-                    <div key={step} className="flex items-center gap-2">
-                      <div className="w-5 h-5 rounded-full border border-[#1A1A1A]/10 flex items-center justify-center text-[10px] font-bold text-[#1A1A1A]/40">
-                        {step}
-                      </div>
-                      {step < 3 && <div className="w-4 h-[1px] bg-[#1A1A1A]/10" />}
-                    </div>
-                  ))}
-                  <div className="h-2 flex-1 bg-[#1A1A1A]/5 rounded" />
-                </div>
-              </div>
-            </div>
-
           </div>
         </section>
 
@@ -579,56 +467,21 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="relative bg-[#F7F7F7] text-[#1A1A1A] pt-24 pb-12 px-6 overflow-hidden border-t border-[#1A1A1A]/5">
-        {/* Brand Watermark */}
-        <div className="absolute bottom-[-20%] left-1/2 -translate-x-1/2 select-none pointer-events-none w-full text-center">
-          <h2 className="text-[12vw] font-black text-[#1A1A1A] opacity-[0.02] tracking-[0.2em] uppercase leading-none">
-            CheckBeforeCommit
-          </h2>
-        </div>
-
-        <div className="max-w-[1200px] mx-auto relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-12 mb-24">
-            {/* Column 1 - Brand */}
-            <div className="col-span-2 md:col-span-1 space-y-6">
-              <Link href="/" className="text-xl font-bold tracking-tight text-[#1A1A1A]">
-                CheckBeforeCommit
-              </Link>
-              <p className="text-[#1A1A1A]/40 text-sm leading-relaxed max-w-xs">
-                Structured technical insights for engineers working with unfamiliar codebases.
-              </p>
-            </div>
-
-            {/* Column 2 - Product */}
-            <div className="space-y-6">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-[#1A1A1A]/90">Product</h4>
-              <ul className="space-y-4 text-sm text-[#1A1A1A]/50">
-                <li><Link href="#how-it-works" className="hover:text-[#FF7D29] transition-colors">How It Works</Link></li>
-                <li><Link href="#pricing" className="hover:text-[#FF7D29] transition-colors">Pricing</Link></li>
-                <li><Link href="/docs" className="hover:text-[#FF7D29] transition-colors">Docs</Link></li>
-                <li><Link href="/changelog" className="hover:text-[#FF7D29] transition-colors">Changelog</Link></li>
-              </ul>
-            </div>
-
-            {/* Column 3 - Legal */}
-            <div className="space-y-6">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-[#1A1A1A]/90">Legal</h4>
-              <ul className="space-y-4 text-sm text-[#1A1A1A]/50">
-                <li><Link href="/tos" className="hover:text-[#FF7D29] transition-colors">Terms of Service</Link></li>
-                <li><Link href="/privacy" className="hover:text-[#FF7D29] transition-colors">Privacy Policy</Link></li>
-                <li><Link href="mailto:support@checkbeforecommit.com" className="hover:text-[#FF7D29] transition-colors">Contact</Link></li>
-              </ul>
-            </div>
+      <footer className="bg-[#F7F7F7] pt-24 pb-12 px-6 border-t border-[#1A1A1A]/5">
+        <div className="max-w-[1100px] mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+          <div className="space-y-4">
+            <Link href="/" className="text-xl font-bold tracking-tight text-[#1A1A1A]">
+              CheckBeforeCommit
+            </Link>
+            <p className="text-[#1A1A1A]/40 text-sm">
+              © 2026 CheckBeforeCommit<br />
+              A codebase understanding engine.
+            </p>
           </div>
 
-          {/* Bottom Bar */}
-          <div className="pt-8 border-t border-[#1A1A1A]/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-mono uppercase tracking-widest text-[#1A1A1A]/30">
-            <div>
-              &copy; 2026 CheckBeforeCommit
-            </div>
-            <div className="flex items-center gap-2">
-              Made for engineers <Github className="w-3 h-3 text-[#1A1A1A]/40" />
-            </div>
+          <div className="flex items-center gap-8 text-sm font-medium text-[#1A1A1A]/60">
+            <Link href="mailto:support@checkbeforecommit.com" className="hover:text-[#FF7D29] transition-colors">Contact</Link>
+            <Link href="https://github.com/VelpuriVineela/CheckBeforeCommit" target="_blank" className="hover:text-[#FF7D29] transition-colors">GitHub</Link>
           </div>
         </div>
       </footer>

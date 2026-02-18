@@ -44,7 +44,7 @@ export function CTASection({ children }: { children?: React.ReactNode }) {
 
                         {/* Headline */}
                         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#1A1A1A] mb-8 leading-[1.15] text-balance drop-shadow-[0_2px_10px_rgba(255,255,255,0.8)]">
-                            Understand any codebase in <span className="bg-gradient-to-r from-[#E65A00] to-[#FF8C38] bg-clip-text text-transparent">minutes.</span>
+                            Understand Any Codebase in Minutes — Before You Commit.
                         </h1>
 
                         {/* Description */}
