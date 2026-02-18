@@ -11,10 +11,10 @@ const Card = React.forwardRef<
             "rounded-lg border bg-card text-card-foreground shadow-sm",
             className
         )}
-    ...props
+        {...props}
     />
 ))
-    Card.displayName = "Card"
+Card.displayName = "Card"
 
 const CardHeader = React.forwardRef<
     HTMLDivElement,
@@ -29,7 +29,7 @@ const CardHeader = React.forwardRef<
 CardHeader.displayName = "CardHeader"
 
 const CardTitle = React.forwardRef<
-    HTMLParagraphElement,
+    HTMLHeadingElement,
     React.HTMLAttributes<HTMLHeadingElement>
 >(({ className, ...props }, ref) => (
     <h3
