@@ -142,85 +142,59 @@ export default function Home() {
           </CTASection>
         </div>
 
-        {/* Problem Section: Two-Column Layout */}
-        <section className="py-[120px] border-y border-[#1A1A1A]/5">
-          <div className="max-w-[1200px] mx-auto px-6 grid md:grid-cols-[60%_40%] gap-16 items-center">
+        {/* Problem Section: Problem-Driven Redesign */}
+        <section className="py-24 bg-white border-y border-[#1A1A1A]/5">
+          <div className="max-w-[1100px] mx-auto px-6 grid md:grid-cols-[60%_40%] gap-12 items-center">
 
-            {/* Left: Friction Bullets */}
-            <div className="space-y-10">
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-[#1A1A1A] leading-tight">
+            {/* Left: Pain Statements */}
+            <div className="space-y-12">
+              <h2 className="text-[48px] md:text-[56px] font-bold tracking-tight text-[#1A1A1A] leading-[1.1]">
                 Stop Wasting Hours Reading Code Blindly.
               </h2>
 
-              <div className="relative pl-8 space-y-6">
-                <div className="absolute left-0 top-2 bottom-2 w-[2px] bg-[#FF7D29]" />
+              <div className="relative pl-8 space-y-8">
+                {/* Vertical Accent Line */}
+                <div className="absolute left-0 top-1 bottom-1 w-[2px] bg-neutral-300" />
                 {[
-                  "Untangling cryptic folder hierarchies without context.",
-                  "Scanning stale READMEs that don't match the code.",
-                  "Tracing deep imports just to find the actual entry point.",
-                  "Building mental maps that vanish by the next morning.",
+                  "Untangling unfamiliar folder hierarchies without context.",
+                  "Reading outdated READMEs that don’t match the system.",
+                  "Tracing deep imports just to find the real entry point.",
+                  "Building mental maps that disappear overnight.",
                   "Guessing the impact of changes in high-risk modules."
                 ].map((item, idx) => (
-                  <p key={idx} className="text-xl text-[#1A1A1A]/70 font-medium">
+                  <p key={idx} className="text-[18px] md:text-[20px] text-neutral-500 font-medium leading-[1.6]">
                     {item}
                   </p>
                 ))}
               </div>
             </div>
 
-            {/* Right: GitHub File Explorer Mockup */}
-            <div className="relative group">
-              <div className="bg-[#F8F9FA] border border-[#1A1A1A]/10 rounded-2xl overflow-hidden shadow-xl aspect-[4/5] flex flex-col blur-[2px] opacity-60 transition-all duration-700 select-none">
-                {/* Mockup Header */}
-                <div className="px-4 py-3 border-b border-[#1A1A1A]/5 flex items-center gap-2 bg-white">
+            {/* Right: Subtle Visual Tension Element */}
+            <div className="relative group flex justify-center md:justify-end">
+              <div className="bg-white border border-neutral-200 rounded-2xl overflow-hidden shadow-sm aspect-[4/5] w-full max-w-[340px] flex flex-col blur-[4px] opacity-40 select-none pointer-events-none transition-all duration-700">
+                {/* Minimal Mockup Header */}
+                <div className="px-4 py-3 border-b border-neutral-100 flex items-center gap-2">
                   <div className="flex gap-1.5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#1A1A1A]/10" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#1A1A1A]/10" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#1A1A1A]/10" />
+                    <div className="w-2 h-2 rounded-full bg-neutral-200" />
+                    <div className="w-2 h-2 rounded-full bg-neutral-200" />
                   </div>
-                  <div className="ml-4 h-3 w-32 bg-[#1A1A1A]/5 rounded" />
                 </div>
 
-                {/* Mockup Tree */}
-                <div className="p-4 space-y-4 overflow-y-auto">
-                  {[
-                    { type: 'folder', name: 'src', open: true, depth: 0 },
-                    { type: 'folder', name: 'core', open: true, depth: 1 },
-                    { type: 'file', name: 'engine.ts', depth: 2 },
-                    { type: 'folder', name: 'utils', open: false, depth: 2 },
-                    { type: 'file', name: 'types.d.ts', depth: 2 },
-                    { type: 'folder', name: 'services', open: true, depth: 1 },
-                    { type: 'file', name: 'auth.service.ts', depth: 2 },
-                    { type: 'file', name: 'data.service.ts', depth: 2 },
-                    { type: 'folder', name: 'internal', open: true, depth: 2 },
-                    { type: 'file', name: 'proxy.js', depth: 3 },
-                    { type: 'folder', name: 'infrastructure', open: false, depth: 0 },
-                    { type: 'folder', name: 'tests', open: false, depth: 0 },
-                    { type: 'file', name: 'package.json', depth: 0 },
-                    { type: 'file', name: 'README.md', depth: 0 },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-2" style={{ paddingLeft: `${item.depth * 16}px` }}>
-                      {item.type === 'folder' ? (
-                        <>
-                          {item.open ? <ChevronDown className="w-4 h-4 text-[#1A1A1A]/30" /> : <ChevronRight className="w-4 h-4 text-[#1A1A1A]/30" />}
-                          <Folder className="w-4 h-4 text-[#FF7D29]/60" />
-                        </>
-                      ) : (
-                        <>
-                          <div className="w-4 h-4" /> {/* Spacer */}
-                          <FileText className="w-4 h-4 text-[#1A1A1A]/40" />
-                        </>
-                      )}
-                      <span className="text-sm font-medium text-[#1A1A1A]/50">{item.name}</span>
+                {/* Mockup Tree - Architecture Only */}
+                <div className="p-6 space-y-5">
+                  {[0, 1, 2, 2, 1, 2, 2, 3, 0, 0].map((depth, i) => (
+                    <div key={i} className="flex items-center gap-3" style={{ paddingLeft: `${depth * 20}px` }}>
+                      <div className="w-4 h-4 rounded bg-neutral-100 shrink-0" />
+                      <div className={`h-2 bg-neutral-100 rounded`} style={{ width: `${Math.random() * 40 + 40}%` }} />
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Overlay Prompt */}
-              <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
-                <div className="bg-white/90 backdrop-blur-sm border border-[#FF7D29]/20 px-8 py-6 rounded-2xl shadow-2xl ring-1 ring-[#FF7D29]/10 transform -rotate-1">
-                  <p className="text-xl md:text-2xl font-bold text-[#1A1A1A] tracking-tight">
+              {/* Overlay Text */}
+              <div className="absolute inset-0 flex items-center justify-center p-6 pointer-events-none">
+                <div className="bg-white/90 backdrop-blur-sm border border-neutral-200 px-8 py-6 rounded-2xl shadow-xl">
+                  <p className="text-xl md:text-2xl font-bold text-neutral-800 tracking-tight">
                     "Where do you even start?"
                   </p>
                 </div>
@@ -230,108 +204,57 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Solution Section: Redesigned "What You Get" */}
-        <section className="py-[140px] bg-white border-b border-[#1A1A1A]/5">
-          <div className="max-w-[1200px] mx-auto px-6 grid md:grid-cols-[55%_45%] gap-20 items-start">
+        {/* Relief Section: What You Actually Get */}
+        <section className="py-24 bg-white border-b border-[#1A1A1A]/5">
+          <div className="max-w-[1100px] mx-auto px-6 grid md:grid-cols-[1fr_1fr] gap-20 items-center">
 
-            {/* Left: Structured Features */}
-            <div className="space-y-12">
+            {/* Left Content */}
+            <div className="space-y-8">
               <div className="space-y-4">
                 <h2 className="text-4xl font-bold tracking-tight text-[#1A1A1A]">
-                  What You Get From Every Analysis
+                  What You Actually Get
                 </h2>
-                <p className="text-lg text-[#1A1A1A]/60 max-w-md">
-                  A high-fidelity mental model of the codebase, generated in seconds.
+                <p className="text-xl text-neutral-500 leading-relaxed">
+                  A high-fidelity mental model of the codebase, generated in seconds. No more guessing.
                 </p>
               </div>
 
-              <div className="space-y-0">
+              <div className="space-y-6">
                 {[
-                  { icon: Map, title: "Architecture Overview", desc: "The core design patterns and high-level structural intent." },
-                  { icon: Compass, title: "Entry Points", desc: "Critical initialization paths and primary API surfaces." },
-                  { icon: Code2, title: "Code Structure Breakdown", desc: "Detailed mapping of how modules interact and where logic lives." },
-                  { icon: BarChart3, title: "Maintainability Signals", desc: "Technical debt assessment and module coupling analysis." },
-                  { icon: ShieldAlert, title: "Hidden Complexity & Risks", desc: "Early warning on fragile modules and integration hazards." },
-                  { icon: Search, title: "Suggested Learning Path", desc: "A step-by-step roadmap for code review and onboarding." },
+                  { title: "Architectural Clarity", desc: "Understand high-level intent and core design patterns immediately." },
+                  { title: "Risk Identification", desc: "Spot fragile modules and high-coupling hazards before they bite." },
+                  { title: "Entry Point Discovery", desc: "Find exactly where the system starts and how data flows through it." }
                 ].map((item, i) => (
-                  <div key={i} className={`py-5 flex gap-5 ${i !== 0 ? 'border-t border-[#1A1A1A]/5' : ''}`}>
-                    <div className="mt-1 w-8 h-8 rounded-lg bg-[#FF7D29]/5 flex items-center justify-center shrink-0 border border-[#FF7D29]/10">
-                      <item.icon className="w-4 h-4 text-[#FF7D29]" />
-                    </div>
-                    <div>
-                      <h3 className="text-base font-bold text-[#1A1A1A] mb-1">{item.title}</h3>
-                      <p className="text-sm text-[#1A1A1A]/60">{item.desc}</p>
-                    </div>
+                  <div key={i} className="space-y-1">
+                    <h3 className="text-lg font-bold text-[#1A1A1A]">{item.title}</h3>
+                    <p className="text-neutral-500">{item.desc}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Right: Product Result Preview */}
-            <div className="relative bg-[#F8F9FA] rounded-xl border border-[#1A1A1A]/10 p-8 min-h-[500px] flex flex-col gap-6">
-              <div className="absolute top-6 right-6 px-3 py-1 bg-[#10B981]/10 border border-[#10B981]/20 rounded-full flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 bg-[#10B981] rounded-full" />
-                <span className="text-[10px] font-bold text-[#10B981] uppercase tracking-wider">Analysis Complete</span>
+            {/* Right Visual: Clean Result Preview */}
+            <div className="bg-neutral-50 rounded-2xl border border-neutral-200 p-8 shadow-sm flex flex-col gap-6">
+              <div className="flex items-center justify-between border-b border-neutral-200 pb-4">
+                <span className="text-xs font-bold text-neutral-400 uppercase tracking-widest">Analysis Preview</span>
+                <div className="w-2 h-2 rounded-full bg-emerald-500" />
               </div>
-
-              {/* Card 1: Architecture Overview */}
-              <div className="bg-white border border-[#1A1A1A]/5 rounded-lg p-5 shadow-sm space-y-3">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-4 h-4 rounded-sm bg-[#FF7D29]/10 border border-[#FF7D29]/20 flex items-center justify-center">
-                    <div className="w-1.5 h-1.5 bg-[#FF7D29] rounded-[1px]" />
-                  </div>
-                  <span className="text-xs font-bold text-[#1A1A1A]">Architecture Overview</span>
-                </div>
+              <div className="space-y-4">
                 <div className="space-y-2">
-                  <div className="h-2 w-full bg-[#1A1A1A]/5 rounded" />
-                  <div className="h-2 w-4/5 bg-[#1A1A1A]/5 rounded" />
-                  <div className="h-2 w-2/3 bg-[#1A1A1A]/5 rounded" />
+                  <div className="h-4 w-[60%] bg-neutral-200 rounded-md" />
+                  <div className="h-3 w-[100%] bg-neutral-100 rounded-md" />
+                  <div className="h-3 w-[90%] bg-neutral-100 rounded-md" />
                 </div>
-              </div>
-
-              {/* Card 2: Risk & Complexity */}
-              <div className="bg-white border border-[#1A1A1A]/5 rounded-lg p-5 shadow-sm space-y-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-4 h-4 rounded-sm bg-[#FF7D29]/10 border border-[#FF7D29]/20 flex items-center justify-center">
-                    <ShieldAlert className="w-2.5 h-2.5 text-[#FF7D29]" />
-                  </div>
-                  <span className="text-xs font-bold text-[#1A1A1A]">Risk & Complexity Signals</span>
-                </div>
-                <div className="space-y-3">
-                  {[
-                    { color: "bg-[#EF4444]", text: "Fragile Module Found: /core/dispatcher.ts" },
-                    { color: "bg-[#F59E0B]", text: "High Coupling Detected in /services/auth" }
-                  ].map((risk, i) => (
-                    <div key={i} className="flex items-center gap-3">
-                      <div className={`w-1.5 h-1.5 rounded-full ${risk.color}`} />
-                      <div className="h-2 flex-1 bg-[#1A1A1A]/5 rounded" />
+                <div className="pt-4 space-y-3">
+                  {[1, 2].map(i => (
+                    <div key={i} className="flex gap-4 items-center">
+                      <div className="w-8 h-8 rounded bg-white border border-neutral-200" />
+                      <div className="h-3 flex-1 bg-neutral-100 rounded-md" />
                     </div>
                   ))}
-                </div>
-              </div>
-
-              {/* Card 3: Suggested Entry Path */}
-              <div className="bg-white border border-[#1A1A1A]/5 rounded-lg p-5 shadow-sm space-y-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-4 h-4 rounded-sm bg-[#FF7D29]/10 border border-[#FF7D29]/20 flex items-center justify-center">
-                    <Search className="w-2.5 h-2.5 text-[#FF7D29]" />
-                  </div>
-                  <span className="text-xs font-bold text-[#1A1A1A]">Suggested Entry Path</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  {[1, 2, 3].map((step) => (
-                    <div key={step} className="flex items-center gap-2">
-                      <div className="w-5 h-5 rounded-full border border-[#1A1A1A]/10 flex items-center justify-center text-[10px] font-bold text-[#1A1A1A]/40">
-                        {step}
-                      </div>
-                      {step < 3 && <div className="w-4 h-[1px] bg-[#1A1A1A]/10" />}
-                    </div>
-                  ))}
-                  <div className="h-2 flex-1 bg-[#1A1A1A]/5 rounded" />
                 </div>
               </div>
             </div>
-
           </div>
         </section>
 
