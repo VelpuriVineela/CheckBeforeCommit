@@ -115,7 +115,7 @@ export default function Home() {
         {/* Dynamic Hero Section */}
         <div ref={heroRef} className="px-6 pt-0 pb-24">
           <CTASection>
-            <div className="w-full max-w-2xl mx-auto space-y-6">
+            <div className="w-full max-w-xl lg:max-w-none space-y-6">
               <form onSubmit={handleInitialAnalyze} className="flex flex-col sm:flex-row gap-3">
                 <div className="relative flex-1">
                   <Github className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#1A1A1A]/40" />
@@ -128,16 +128,16 @@ export default function Home() {
                 </div>
                 <Button
                   type="submit"
-                  className="h-14 px-8 bg-[#FF7D29] hover:bg-[#FF7D29]/90 text-white font-bold text-md rounded-xl shadow-md transition-all whitespace-nowrap"
+                  className="h-14 px-8 w-full sm:w-auto bg-[#FF7D29] hover:bg-[#FF7D29]/90 text-white font-bold text-md rounded-xl shadow-md transition-all whitespace-nowrap"
                 >
                   Analyze for Free
                 </Button>
               </form>
 
-              <div className="flex items-center justify-center gap-6 pt-4">
+              <div className="flex items-center justify-center lg:justify-start gap-6 pt-2">
                 <button
                   onClick={() => router.push('/dashboard/history')}
-                  className="text-sm font-semibold flex items-center gap-2 hover:opacity-70 transition-opacity"
+                  className="text-sm font-semibold flex items-center gap-2 hover:opacity-70 transition-opacity text-[#1A1A1A]/60"
                 >
                   View Sample Analysis <ArrowRight className="w-4 h-4" />
                 </button>
