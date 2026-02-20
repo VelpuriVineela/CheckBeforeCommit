@@ -32,16 +32,20 @@ export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
   const [url, setUrl] = useState('');
   const [user, setUser] = useState<any>(null);
-  const [isMounted, setIsMounted] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
     const supabase = createClient();
 
     const checkUser = async () => {
       const { data: { user: currentUser } } = await supabase.auth.getUser();
-      setUser(currentUser);
+      if (currentUser) {
+        router.replace('/dashboard');
+      } else {
+        setUser(null);
+        setIsLoading(false);
+      }
     };
     checkUser();
 
@@ -58,7 +62,7 @@ export default function Home() {
       subscription.unsubscribe();
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [router]);
 
   const handleInitialAnalyze = (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,7 +73,7 @@ export default function Home() {
     router.push(nextPath);
   };
 
-  if (!isMounted) return null;
+  if (isLoading) return null;
 
   return (
     <div className="min-h-screen text-[#1A1A1A] font-sans selection:bg-[#FFBF78]/30">
