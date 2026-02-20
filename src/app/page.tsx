@@ -579,55 +579,46 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="relative bg-[#F7F7F7] text-[#1A1A1A] pt-24 pb-12 px-6 overflow-hidden border-t border-[#1A1A1A]/5">
-        {/* Brand Watermark */}
-        <div className="absolute bottom-[-20%] left-1/2 -translate-x-1/2 select-none pointer-events-none w-full text-center">
-          <h2 className="text-[12vw] font-black text-[#1A1A1A] opacity-[0.02] tracking-[0.2em] uppercase leading-none">
-            CheckBeforeCommit
-          </h2>
-        </div>
-
-        <div className="max-w-[1200px] mx-auto relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-12 mb-24">
+      <footer className="border-t border-gray-200 bg-white py-16 px-6">
+        <div className="max-w-[1100px] mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
             {/* Column 1 - Brand */}
-            <div className="col-span-2 md:col-span-1 space-y-6">
+            <div className="space-y-4">
               <Link href="/" className="text-xl font-bold tracking-tight text-[#1A1A1A]">
                 CheckBeforeCommit
               </Link>
-              <p className="text-[#1A1A1A]/40 text-sm leading-relaxed max-w-xs">
+              <p className="text-[#1A1A1A]/60 text-sm leading-relaxed max-w-xs">
                 Structured technical insights for engineers working with unfamiliar codebases.
               </p>
             </div>
 
             {/* Column 2 - Product */}
             <div className="space-y-6">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-[#1A1A1A]/90">Product</h4>
-              <ul className="space-y-4 text-sm text-[#1A1A1A]/50">
+              <h4 className="text-sm font-bold text-[#1A1A1A]">Product</h4>
+              <ul className="space-y-3 text-sm text-[#1A1A1A]/60">
                 <li><Link href="#how-it-works" className="hover:text-[#FF7D29] transition-colors">How It Works</Link></li>
                 <li><Link href="#pricing" className="hover:text-[#FF7D29] transition-colors">Pricing</Link></li>
-                <li><Link href="/docs" className="hover:text-[#FF7D29] transition-colors">Docs</Link></li>
-                <li><Link href="/changelog" className="hover:text-[#FF7D29] transition-colors">Changelog</Link></li>
+                <li><Link href="/dashboard" className="hover:text-[#FF7D29] transition-colors">Dashboard</Link></li>
+                <li><Link href="/login" className="hover:text-[#FF7D29] transition-colors">Login</Link></li>
               </ul>
             </div>
 
-            {/* Column 3 - Legal */}
+            {/* Column 3 - Connect */}
             <div className="space-y-6">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-[#1A1A1A]/90">Legal</h4>
-              <ul className="space-y-4 text-sm text-[#1A1A1A]/50">
-                <li><Link href="/tos" className="hover:text-[#FF7D29] transition-colors">Terms of Service</Link></li>
-                <li><Link href="/privacy" className="hover:text-[#FF7D29] transition-colors">Privacy Policy</Link></li>
+              <h4 className="text-sm font-bold text-[#1A1A1A]">Connect</h4>
+              <ul className="space-y-3 text-sm text-[#1A1A1A]/60">
                 <li><Link href="mailto:support@checkbeforecommit.com" className="hover:text-[#FF7D29] transition-colors">Contact</Link></li>
               </ul>
             </div>
           </div>
 
           {/* Bottom Bar */}
-          <div className="pt-8 border-t border-[#1A1A1A]/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-mono uppercase tracking-widest text-[#1A1A1A]/30">
+          <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium text-[#1A1A1A]/40">
             <div>
               &copy; 2026 CheckBeforeCommit
             </div>
-            <div className="flex items-center gap-2">
-              Made for engineers <Github className="w-3 h-3 text-[#1A1A1A]/40" />
+            <div className="text-right">
+              Built for engineers who value architectural clarity.
             </div>
           </div>
         </div>
