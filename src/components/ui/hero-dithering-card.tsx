@@ -17,7 +17,7 @@ export function CTASection({ children }: { children?: React.ReactNode }) {
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >
-                <div className="relative overflow-hidden rounded-[48px] border border-[#1A1A1A]/5 bg-white shadow-sm py-20 px-[60px] flex flex-col items-center justify-center duration-500">
+                <div className="relative overflow-hidden rounded-3xl md:rounded-[48px] border border-[#1A1A1A]/5 bg-white shadow-sm py-12 md:py-20 px-6 md:px-[60px] flex flex-col items-center justify-center duration-500">
                     <Suspense fallback={<div className="absolute inset-0 bg-muted/20" />}>
                         <div className="absolute inset-0 z-0 pointer-events-none opacity-25 mix-blend-multiply">
                             <Dithering
