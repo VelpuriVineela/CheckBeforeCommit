@@ -13,11 +13,11 @@ export function CTASection({ children }: { children?: React.ReactNode }) {
     return (
         <section className="w-full flex justify-center items-center px-4 md:px-6">
             <div
-                className="w-full max-w-[1100px] relative mx-auto"
+                className="w-full max-w-[1200px] relative"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >
-                <div className="relative overflow-hidden rounded-3xl md:rounded-[48px] border border-[#1A1A1A]/5 bg-white shadow-sm py-16 lg:py-20 px-4 md:px-6 lg:px-[60px] flex flex-col lg:flex-row items-center lg:justify-between text-center lg:text-left duration-500 gap-8 lg:gap-12">
+                <div className="relative overflow-hidden rounded-[48px] border border-[#1A1A1A]/5 bg-white shadow-sm py-20 px-[60px] flex flex-col items-center justify-center duration-500">
                     <Suspense fallback={<div className="absolute inset-0 bg-muted/20" />}>
                         <div className="absolute inset-0 z-0 pointer-events-none opacity-25 mix-blend-multiply">
                             <Dithering
@@ -32,8 +32,9 @@ export function CTASection({ children }: { children?: React.ReactNode }) {
                         </div>
                     </Suspense>
 
-                    <div className="relative z-10 w-full max-w-2xl flex flex-col items-center lg:items-start">
-                        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#FF7D29]/10 bg-[#FF7D29]/5 px-4 py-1.5 text-sm font-medium text-[#FF7D29] backdrop-blur-sm">
+                    <div className="relative z-10 w-full max-w-4xl mx-auto text-center flex flex-col items-center">
+
+                        <div className="mt-6 mb-8 inline-flex items-center gap-2 rounded-full border border-[#FF7D29]/10 bg-[#FF7D29]/5 px-4 py-1.5 text-sm font-medium text-[#FF7D29] backdrop-blur-sm">
                             <span className="relative flex h-2 w-2">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF7D29] opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF7D29]"></span>
@@ -42,18 +43,16 @@ export function CTASection({ children }: { children?: React.ReactNode }) {
                         </div>
 
                         {/* Headline */}
-                        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight text-[#1A1A1A] mb-6 leading-tight text-balance">
+                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#1A1A1A] mb-8 leading-[1.15] text-balance drop-shadow-[0_2px_10px_rgba(255,255,255,0.8)]">
                             Understand any codebase in <span className="bg-gradient-to-r from-[#E65A00] to-[#FF8C38] bg-clip-text text-transparent">minutes.</span>
                         </h1>
 
                         {/* Description */}
-                        <p className="text-[#1A1A1A]/60 text-base md:text-lg mb-0 leading-relaxed max-w-xl">
+                        <p className="text-[#1A1A1A]/60 text-lg md:text-xl max-w-2xl mb-12 leading-relaxed">
                             Skip the manual code-crawling. Get instant clarity on system architecture,
-                            complexity hot-spots, and integration risks.
+                            complexity hot-spots, and integration risks before you write a single line of code.
                         </p>
-                    </div>
 
-                    <div className="relative z-10 w-full sm:w-auto mt-6 lg:mt-0">
                         {children}
                     </div>
                 </div>
