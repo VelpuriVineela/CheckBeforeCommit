@@ -12,8 +12,8 @@ import Link from 'next/link';
 import { AdminTables } from '@/components/admin/AdminTables';
 
 const ALLOWED_ADMIN_EMAILS = [
-    'vineelavelpuri@email.com',
-    'vineelavelpuri26@email.com',
+    'vineelavelpuri@gmail.com',
+    'vineelavelpuri26@gmail.com',
     'admin@example.com' // Added for testing if needed
 ];
 
