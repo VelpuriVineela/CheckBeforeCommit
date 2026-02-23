@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { AdminTables } from '@/components/admin/AdminTables';
 
 const ALLOWED_ADMIN_EMAILS = [
-    'founder1@email.com',
+    'vineelavelpuri@email.com',
     'founder2@email.com',
     'admin@example.com' // Added for testing if needed
 ];
