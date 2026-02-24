@@ -45,6 +45,7 @@ create table analyses (
   repo_url text not null,
   status text not null check (status in ('pending', 'running', 'completed', 'failed')),
   result jsonb,
+  summary text,
   error_message text,
   created_at timestamp with time zone default now() not null,
   updated_at timestamp with time zone default now() not null

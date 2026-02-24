@@ -70,11 +70,13 @@ export async function runAnalysis(analysisId: string, repoUrl: string) {
         const analysisResult = await analyzeRepo(repoData);
 
         // 5. Finalize as 'completed'
+        const summary = analysisResult.onboarding.coreDomainSummary || analysisResult.repoSnapshot.description.substring(0, 150) + '...';
         const { data, error } = await supabase
             .from("analyses")
             .update({
                 status: 'completed',
                 result: analysisResult,
+                summary: summary,
                 updated_at: new Date().toISOString()
             })
             .eq('id', analysisId)
@@ -101,4 +103,31 @@ export async function runAnalysis(analysisId: string, repoUrl: string) {
 
         return { success: false, error: err.message };
     }
+}
+
+/**
+ * 3. deleteAnalysis
+ * Deletes an analysis record.
+ * Must belong to the user.
+ */
+export async function deleteAnalysis(analysisId: string) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        throw new Error("Authentication required to delete an analysis.");
+    }
+
+    const { error } = await supabase
+        .from("analyses")
+        .delete()
+        .eq('id', analysisId)
+        .eq('user_id', user.id);
+
+    if (error) {
+        console.error("Failed to delete analysis record:", error);
+        throw new Error(`Database error: ${error.message}`);
+    }
+
+    return { success: true };
 }
