@@ -12,11 +12,16 @@ export default async function HistoryPage() {
         redirect('/login');
     }
 
-    const { data: analyses } = await supabase
+    const { data: analyses, error } = await supabase
         .from('analyses')
-        .select('id, repo_url, status, created_at, summary')
+        .select('*')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
+
+    // Temporary Debug Logs
+    console.log("History user:", user?.id);
+    console.log("History results:", analyses);
+    console.log("History error:", error);
 
     return (
         <div className="max-w-6xl mx-auto px-6 py-12 space-y-10">
