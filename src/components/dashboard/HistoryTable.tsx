@@ -88,13 +88,8 @@ export function HistoryTable({ initialAnalyses }: HistoryTableProps) {
                                         {analysis.status}
                                     </Badge>
                                 </td>
-                                <td className="px-6 py-4 max-w-[300px]">
-                                    <p
-                                        className="text-xs text-[#1A1A1A]/60 truncate"
-                                        title={analysis.summary || 'No summary available'}
-                                    >
-                                        {analysis.summary || '-'}
-                                    </p>
+                                <td className="px-6 py-4 truncate max-w-xs" title={analysis.summary || "No summary available"}>
+                                    {analysis.summary || "No summary available"}
                                 </td>
                                 <td className="px-6 py-4 text-right">
                                     <div className="flex items-center justify-end gap-2">

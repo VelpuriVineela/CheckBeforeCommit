@@ -70,7 +70,11 @@ export async function runAnalysis(analysisId: string, repoUrl: string) {
         const analysisResult = await analyzeRepo(repoData);
 
         // 5. Finalize as 'completed'
-        const summary = analysisResult.onboarding.coreDomainSummary || analysisResult.repoSnapshot.description.substring(0, 150) + '...';
+        const summary =
+            analysisResult?.onboarding?.coreDomainSummary ||
+            repoData?.description?.slice(0, 180) ||
+            "Summary not available";
+
         const { data, error } = await supabase
             .from("analyses")
             .update({
