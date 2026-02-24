@@ -1,9 +1,8 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
-import { Search } from 'lucide-react';
+import { Search, History } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { HistoryTable } from '@/components/dashboard/HistoryTable';
-import { History } from 'lucide-react';
 
 export default async function HistoryPage() {
     const supabase = await createClient();
