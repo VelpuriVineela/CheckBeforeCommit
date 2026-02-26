@@ -14,6 +14,7 @@ import { AdminTables } from '@/components/admin/AdminTables';
 const ALLOWED_ADMIN_EMAILS = [
     'vineelavelpuri@gmail.com',
     'vineelavelpuri26@gmail.com',
+    'teamintrasphere@gmail.com',
     'admin@example.com' // Added for testing if needed
 ];
 
